@@ -242,9 +242,10 @@ def printGraph(DG):
 	def bfsP(node, tab):
 		marked.add(node)
 		print tab + str(node.id) + ": " + node.title
+		tab += "\t"
 		for n in DG.successors(node):
 			if n not in marked:
-				tab += "\t"
+				
 				bfsP(n, tab)
 	
 	axioms = [n for n,d in DG.in_degree() if d == 0]
