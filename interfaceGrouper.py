@@ -130,7 +130,7 @@ while topic != "end":
 		if start == "project":
 			input = ""
 			while input != "end":
-				input = raw_input("Project: ")
+				input = raw_input("project: ")
 				if input == "end":
 					continue
 				getProject(data, DG)
