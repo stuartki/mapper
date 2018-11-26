@@ -1,10 +1,17 @@
 import os
 import sys
 from Node import Node
-from readGrouper import reader
+from readGrouper1 import reader
+
+def writeToFile(file, data):
+	open(file, "w").close()
+	data= data[1:]
+	data = [n.__dict__ for n in data]
+	with open(file, "w") as current_file:
+		current_file.write(json.dumps(data))
 
 def edit(data):
-	file = "/Users/stuartki/Documents/connector/" + topic + ".txt"
+
 	start = ""
 	
 	content = ""
@@ -20,6 +27,10 @@ def edit(data):
 		cur = ""
 		while cur != "end":
 			cur = raw_input(str(id) + ": ")
+			if cur == "end":
+				continue
+			if cur == "ls":
+				cur_node.printNode()
 			if cur == "description":
 				descrNew = raw_input("\nid: " + str(id) + "\n" + str(cur_node.description) + "\n: ")
 				if descrNew == "end":
@@ -28,41 +39,53 @@ def edit(data):
 					cur_node.description = descrNew
 					print "\nid: " + str(id) + "\n" + str(cur_node.description)
 			if cur == "past":
-				pa = ""
-				while pa != "end":
-					if pa == "end":
+				p = ""
+				while p != "end":
+
+					p = raw_input("\nid: " + str(id) + "\n" + ", "+ str(cur_node.past) + "\n\n: ")
+					if p == "end":
 						continue
-					pa = raw_input("\nid: " + str(id) + "\n" + ", ".join(cur_node.past) + "\n\n: ")
-					p = list(pa)
-					if p[0] == "-":
-						cur_node.past.remove(p[1])
-						data[int(p[1])].future.remove(p[1])
-					if p[0] == "+":
-						cur_node.past.append(p[1])
-						data[int(p[1])].future.append(p[1])
-					print "\nid: " + str(id) + "\n" + ", ".join(cur_node.past)
+
+					
+					ind = p[0]
+					newID = int(p[1:])
+					
+					if ind == "-":
+						cur_node.past.remove(newID)
+						data[newID].future.remove(id)
+					if ind == "+":
+						cur_node.past.append(newID)
+						data[newID].future.append(id)
+					print "\nid: " + str(id) + "\n" + ", " + str(cur_node.past)
 			if cur == "future":
 
-				pa = ""
-				while pa != "end":
-					if pa == "end":
-						continue
-					pa = raw_input("\nid: " + str(id) + "\n" + ", ".join(cur_node.future) + "\n\n: ")
-					p = list(pa)
-					if p[0] == "-":
-						cur_node.future.remove(p[1])
-						data[int(p[1])].past.remove(p[1])
-					if p[0] == "+":
-						cur_node.future.append(p[1])
-						data[int(p[1])].past.append(p[1])
-					print "\nid: " + str(id) + "\n" + ", ".join(cur_node.future)
-			if cur == "related":
+				p = ""
+				while p != "end":
 
+					p = raw_input("\nid: " + str(id) + "\n" + ", "  + str(cur_node.future) + "\n\n: ")
+					if p == "end":
+						continue
+
+				
+					ind = p[0]
+					newID = int(p[1:])
+					print newID
+					
+					if ind == "-":
+						cur_node.future.remove(newID)
+						data[newID].past.remove(id)
+					if ind == "+":
+						cur_node.future.append(newID)
+						data[newID].past.append(id)
+					print "\nid: " + str(id) + "\n" + ", " + str(cur_node.future)
+			if cur == "related":
 				pa = ""
 				while pa != "end":
+
+					pa = raw_input("\nid: " + str(id) + "\n" + ", ".join(cur_node.related) + "\n\n: ")
 					if pa == "end":
 						continue
-					pa = raw_input("\nid: " + str(id) + "\n" + ", ".join(cur_node.related) + "\n\n: ")
+					
 					p = list(pa)
 					if p[0] == "-":
 						cur_node.related.remove(p[1])
@@ -75,9 +98,11 @@ def edit(data):
 
 				pa = ""
 				while pa != "end":
+
+					pa = raw_input("\nid: " + str(id) + "\n" + ", ".join(cur_node.keywords) + "\n\n: ")
 					if pa == "end":
 						continue
-					pa = raw_input("\nid: " + str(id) + "\n" + ", ".join(cur_node.keywords) + "\n\n: ")
+					
 					p = list(pa)
 					if p[0] == "-":
 						cur_node.keywords.remove(p[1])
@@ -86,21 +111,20 @@ def edit(data):
 					print "\nid: " + str(id) + "\n" + ", ".join(cur_node.keywords)
 			if cur == "title":
 
-				descrNew = raw_input("\nid: " + str(id) + "\n" + cur_node.title + "\n\n: ")
-				if descrNew == "end":
+				titleNew = raw_input("\nid: " + str(id) + "\n" + cur_node.title + "\n\n: ")
+				if titleNew == "end":
 					continue
 				else:
-					cur_node.description = descrNew	
+					cur_node.title = titleNew	
 				print "\nid: " + str(id) + "\n" + cur_node.title
-			if cur == "type":
-
-				descrNew = raw_input("\nid: " + str(id) + "\n" + cur_node.type + "\n\n: ")
-				if descrNew == "end":
-					continue
-				else:
-					cur_node.description = descrNew	
-				print "\nid: " + str(id) + "\n" + cur_node.type
+# 			if cur == "type":
+# 
+# 				typeNew = raw_input("\nid: " + str(id) + "\n" + cur_node.type + "\n\n: ")
+# 				if descrNew == "end":
+# 					continue
+# 				else:
+# 					cur_node.description = descrNew	
+# 				print "\nid: " + str(id) + "\n" + cur_node.type
 				
-		
 	return data
 				
