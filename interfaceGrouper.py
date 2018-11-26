@@ -3,10 +3,10 @@ import sys
 from Node import Node
 from readGrouper1 import reader
 from editGrouper import edit
-from searcher import searcher
+from searcher import searcher, get
 from writerGrouper4 import writer
 from writerGrouper4 import writeToFile
-from network4 import mostPopularSuc, mostPopularPred, init,	draw_all, cleanPred, mostDegreeCentrality, labeler
+from network4 import mostPopularSuc, mostPopularPred, init, draw_all, cleanPred, mostDegreeCentrality, labeler, getProject, printGraph
 import json
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -125,14 +125,14 @@ while topic != "end":
 				plt.show()
 
 		if start == "get":
-			id = raw_input("id: ")
-			try:
-				id = int(id)
-				data[id].printNode()
-			except:
-				print "NOT INT"
+			get(data)
 			
-
+		if start == "project":
+			input = ""
+			while input != "end":
+				input = raw_input("Project: ")
+				getProject(data, DG)
+			
 
 
 
