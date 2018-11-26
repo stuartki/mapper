@@ -86,11 +86,11 @@ while topic != "end":
 			
 		if start == "summarize":
 			size = int(len(DG.nodes())/10)
-			print size
-			centralnodes =  [n[0] for n in mostDegreeCentrality(DG, limit = 10)]
+			print "Size = " + str(size)
+			centralnodes =  [n[0] for n in mostDegreeCentrality(DG, limit = size)]
 			
-			suc = mostPopularSuc(data, DG, limit = 10)
-			pred = mostPopularPred(data, DG, limit = 10)
+			suc = mostPopularSuc(data, DG, limit = size)
+			pred = mostPopularPred(data, DG, limit = size)
 			
 			totalNodes = []
 			totalNodes.extend(centralnodes)
