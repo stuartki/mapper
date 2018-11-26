@@ -125,12 +125,7 @@ while topic != "end":
 				plt.show()
 
 		if start == "get":
-			id = raw_input("id: ")
-			try:
-				id = int(id)
-				data[id].printNode()
-			except:
-				print "NOT INT"
+			get(data)
 			
 		if start == "project":
 			input = ""
