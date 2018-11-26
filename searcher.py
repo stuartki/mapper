@@ -32,7 +32,14 @@ def ngram(input, n):
 		f = f[:-1]
 		output.append(f)
 	return output
-
+def get(data):
+	id = raw_input("id: ")
+	try:
+		id = int(id)
+		data[id].printNode()
+	except:
+		print "NOT INT"
+		
 def searcher(word, data):
 	def ngram(input, n):
 		input = input.split(' ')
