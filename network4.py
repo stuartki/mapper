@@ -8,7 +8,6 @@ import matplotlib.pyplot as plt
 import operator
 from collections import Counter
 import pandas as pd
-from tester import position
 
 
 
@@ -50,6 +49,7 @@ def bfs(node, data, DG):
 			
 			startArray.append(cur)
 	return startArray
+
 def dictSorter(dict, rev = ""):
 	if rev == "reverse":
 		r = True
@@ -58,7 +58,29 @@ def dictSorter(dict, rev = ""):
 	sorted_x = sorted(dict.items(), key=operator.itemgetter(1), reverse = r)
 	return sorted_x		
 
+def position(DG):
+	marked = set()
+	pos = {}
+	def bfsPos(node, x, y):
+		if node not in marked:
 
+			marked.add(node)
+			pos[node] = (x, y)
+			count = 0
+			for n in DG.successors(node):
+				print count
+				count = bfsPos(n, x + count, y + 10)
+				print count
+				print
+				count += 10
+			return count
+	
+	axioms = [n for n,d in DG.in_degree() if d == 0]
+	
+	
+	c = 0
+	for node in axioms:
+		c = bfsPos(node, c, 0)
 	
 # initialize DG	
 def init(d):
@@ -215,9 +237,103 @@ def lenSuc(data):
 	ranks = dictSorter(rankDict, rev = "reverse")
 	return ranks
 
-def getProject(data, DG):
-	leaves = [n for n,d in DG.out_degree() if d == 0]
+def printGraph(DG):
+	marked = set()
+	def bfsP(node, tab):
+		marked.add(node)
+		print tab + str(node.id) + ": " + node.title
+		for n in DG.successors(node):
+			if n not in marked:
+				tab += "\t"
+				bfsP(n, tab)
 	
+	axioms = [n for n,d in DG.in_degree() if d == 0]
+	
+
+	for node in axioms:
+		bfsP(node, tab = "")
+		
+def getProject(data, DG):	
+	leaves = [n for n,d in DG.out_degree() if d == 0]
+	pred = [n for n,d in DG.in_degree() if d == 0]
+	dict = {}
+	marked = set()
+	id = ""
+
+	id = raw_input("InID: ")
+	
+	outID = raw_input("OutID: ")
+	if id == "all" and outID == "all":
+
+		for node in pred:
+			s = set()
+			for out in leaves:
+				try:
+					for a in nx.all_simple_paths(DG, node, out):
+						for b in a:
+							s.add(b)
+				except:
+					continue
+
+			dict[node] = DG.subgraph(s)
+
+	
+	elif outID == "all" and id != "all":
+		try:
+			id = int(id)
+
+			pp = data[id]
+			s = set()
+			for out in leaves:
+				try:
+					for a in nx.all_simple_paths(DG, pp, out):
+						for b in a:
+							s.add(b)
+				except:
+					continue
+
+			dict[pp] = DG.subgraph(s)
+		except:
+			print "INVALID"
+	elif id == "all" and outID != "all":
+		try:
+			outID = int(outID)
+
+			out = data[outID]
+			s = set()
+			for p in pred:
+				try:
+					for a in nx.all_simple_paths(DG, p, out):
+						for b in a:
+							s.add(b)
+				except:
+					continue
+
+			dict[p] = DG.subgraph(s)
+		except:
+			print "INVALID"
+	else:
+		outID = int(outID)
+		inID = int(id)
+
+		out = data[outID]
+		i = data[inID]
+		s = set()
+
+		try:
+			for a in nx.all_simple_paths(DG, i, out):
+				for b in a:
+					s.add(b)
+		except:
+			print "NO PATH"
+		
+		dict[i] = DG.subgraph(s)
+
+			
+	for n in dict.keys():
+		printGraph(dict[n])
+	return dict
+		
 
 def draw_all(data, DG):
 	#nx.draw(DG, with_labels = False, node_size = 150, font_size = 4)
@@ -294,7 +410,7 @@ def deleteIsolates(DG):
 
 
 ##WORKSPACE
-indict = 2
+indict = -2
 
 
 if indict == -1:
