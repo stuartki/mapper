@@ -39,7 +39,13 @@ def get(data):
 		data[id].printNode()
 	except:
 		print "NOT INT"
-		
+def isCycle(DG):
+	cycle = nx.simple_cycles(DG)
+	if len(list(cycle)) > 0:
+		for n in cycle:
+			print n
+	else:
+		print "NO CYCLES"
 def searcher(word, data):
 	def ngram(input, n):
 		input = input.split(' ')
