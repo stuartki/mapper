@@ -215,6 +215,10 @@ def lenSuc(data):
 	ranks = dictSorter(rankDict, rev = "reverse")
 	return ranks
 
+def getProject(data, DG):
+	leaves = [n for n,d in DG.out_degree() if d == 0]
+	
+
 def draw_all(data, DG):
 	#nx.draw(DG, with_labels = False, node_size = 150, font_size = 4)
 	pos = nx.spring_layout(DG)
