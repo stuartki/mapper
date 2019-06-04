@@ -1,6 +1,6 @@
 # mapper
 
-This is a ote-taking interface on terminal, organizing learning into trees; nodes are definitions, edges are supporting "future" facts.
+This is a note-taking interface on terminal, organizing learning into trees; nodes are definitions, edges are supporting "future" facts.
 
 To do:
 
