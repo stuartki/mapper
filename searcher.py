@@ -2,57 +2,62 @@
 import os
 import sys
 from Node import Node
+import networkx as nx
 	
-def pastNode(content, data):
-	pastNodes = []
-	words = word_tokenize(content)
+# def pastNode(content, data):
+# 	pastNodes = []
+# 	words = word_tokenize(content)
 
 
-	stop_words = set(stopwords.words('english'))
+# 	stop_words = set(stopwords.words('english'))
 
-	fs = [w for w in words if not w.lower() in stop_words]
+# 	fs = [w for w in words if not w.lower() in stop_words]
 	
-	f = list(set(fs))
+# 	f = list(set(fs))
 
-	for x in data:
-		if isinstance(x, int):
-			continue
-		if x.title in f:
-			pastNodes.append(x.id)
-	return pastNodes
+# 	for x in data:
+# 		if isinstance(x, int):
+# 			continue
+# 		if x.title in f:
+# 			pastNodes.append(x.id)
+# 	return pastNodes
 
-def ngram(input, n):
-	input = input.split(' ')
+def ngram(phrase, n):
+	phrase = phrase.split(' ')
 	output = []
-	for i in range(len(input)-n+1):
+	for i in range(len(phrase)-n+1):
 		f = ""
-		for s in input[i:i+n]:
+		for s in phrase[i:i+n]:
 			f += s + ' '
 			
 		f = f[:-1]
 		output.append(f)
 	return output
+
 def get(data):
-	id = raw_input("id: ")
+	id = input("id: ")
 	try:
 		id = int(id)
 		data[id].printNode()
 	except:
-		print "NOT INT"
+		print("NOT INT")
+		
 def isCycle(DG):
-	cycle = nx.simple_cycles(DG)
-	if len(list(cycle)) > 0:
-		for n in cycle:
-			print n
-	else:
-		print "NO CYCLES"
+	try:
+		cycle = nx.find_cycle(DG)
+		for edge in cycle:
+			n = edge[0]
+			print(str(n.id) + ": " + n.title)
+	except:
+		print("NO CYCLES")
+
 def searcher(word, data):
-	def ngram(input, n):
-		input = input.split(' ')
+	def ngram(phrase, n):
+		phrase = phrase.split(' ')
 		output = []
-		for i in range(len(input)-n+1):
+		for i in range(len(phrase)-n+1):
 			f = ""
-			for s in input[i:i+n]:
+			for s in phrase[i:i+n]:
 				f += s + ' '
 			
 			f = f[:-1]
@@ -66,10 +71,12 @@ def searcher(word, data):
 		if isinstance(node, int):
 			continue
 		for w in ngram(node.title, n):
-			if word == w.lower():
+			if word in w.lower():
 				returnArray.append(node)
 				break
 		
 			
 		
 	return returnArray
+	
+
