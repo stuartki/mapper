@@ -17,11 +17,13 @@ class Node(object):
 	def relate(self, relate):
 		self.related.append(relate)
 	def printNode(self):
-		print self.id
-		print self.past
-		print self.future
-		print self.related
-		print self.keywords
-		print self.description
+		print(self.id)
+		print(self.title)
+		print(self.type)
+		print(self.past)
+		print(self.future)
+		print(self.related)
+		print(self.keywords)
+		print(self.description)
 	
 	
